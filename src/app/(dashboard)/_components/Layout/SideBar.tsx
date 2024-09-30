@@ -1,9 +1,13 @@
+"use client";
+import { cn } from "@/lib/utils";
 import {
   DashboardIcon,
   MagnifyingGlassIcon,
   ResumeIcon,
 } from "@radix-ui/react-icons";
+import { Binoculars, FolderKanban, UserRoundSearch } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function SideBar() {
   return (
@@ -12,19 +16,19 @@ export default function SideBar() {
       <ul className="space-y-2">
         <li>
           <SingleNav href="/">
-            <DashboardIcon fontSize={28} />
+            <FolderKanban size={16} />
             Overview
           </SingleNav>
         </li>
         <li>
           <SingleNav href="/market_research">
-            <MagnifyingGlassIcon fontSize={28} />
+            <Binoculars size={16} />
             Market Research
           </SingleNav>
         </li>
         <li>
           <SingleNav href="/user_research">
-            <ResumeIcon fontSize={28} />
+            <UserRoundSearch size={16} />
             User Research
           </SingleNav>
         </li>
@@ -34,10 +38,22 @@ export default function SideBar() {
 }
 
 const SingleNav = ({ href, children }) => {
+  const path = usePathname();
+  let active = false;
+
+  if (href === "/") {
+    active = path === "/";
+  } else if (path.includes(href)) {
+    active = true;
+  }
+
   return (
     <Link
       href={href}
-      className="px-4 py-2 rounded hover:bg-gray-200 flex items-center gap-2 text-sm font-medium"
+      className={cn(
+        "px-4 py-2 rounded hover:bg-gray-200 flex items-center gap-2 text-sm font-medium",
+        active && "bg-gray-200"
+      )}
     >
       {children}
     </Link>
